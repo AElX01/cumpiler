@@ -4,7 +4,7 @@
 #include <string.h>
 #define ALLOC_IMPLEMENTATION
 #include "alloc.h/alloc.h"
-#include "lexer.h"
+#include "parser.h"
 
 void *get_file_data(const char *path) {
   FILE *file = fopen(path, "r");
@@ -32,11 +32,11 @@ void *get_file_data(const char *path) {
 int main(void) {
   char *data = get_file_data("json_files/example_1.json");
 
-  printf("%s\n", data);
-
   tokenize(data);
 
   Tokens_Array_printf();
+
+  parse();
 
   return 0;
 }

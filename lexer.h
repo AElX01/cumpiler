@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef TOKENS_H
-#define TOKENS_H
+#ifndef LEXER_H
+#define LEXER_H
 
 #include <ctype.h>
 #include <stdio.h>
