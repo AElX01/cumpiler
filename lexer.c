@@ -1,16 +1,16 @@
 #include "lexer.h"
 
-// custom allocator
+//  allocator
 extern void *mem_alloc(size_t size);
 
-Tokens_List *TOKENS = NULL;
+Tokens_Array *TOKENS = NULL;
 
-void Tokens_List_append(Token_Data *data) {
+void Tokens_Array_append(Token_Data *data) {
   if (data == NULL)
     return;
 
   if (TOKENS == NULL) {
-    TOKENS = mem_alloc(sizeof(Tokens_List));
+    TOKENS = mem_alloc(sizeof(Tokens_Array));
     TOKENS->items = NULL;
     TOKENS->size = 0;
     TOKENS->capacity = 0;
@@ -107,7 +107,7 @@ const char *token_to_string(Token token) {
   }
 }
 
-void Tokens_List_printf(void) {
+void Tokens_Array_printf(void) {
   if (TOKENS == NULL)
     return;
 
@@ -120,7 +120,7 @@ void Tokens_List_printf(void) {
   }
 }
 
-Tokens_List *tokenize(char *data) {
+Tokens_Array *tokenize(char *data) {
 
   int current_line = 0;
 
@@ -142,7 +142,7 @@ Tokens_List *tokenize(char *data) {
           .line = current_line,
       };
 
-      Tokens_List_append(&token);
+      Tokens_Array_append(&token);
       data++;
       continue;
     }
@@ -160,7 +160,7 @@ Tokens_List *tokenize(char *data) {
           .line = current_line,
       };
 
-      Tokens_List_append(&token);
+      Tokens_Array_append(&token);
       data++;
       continue;
     }
@@ -178,7 +178,7 @@ Tokens_List *tokenize(char *data) {
           .line = current_line,
       };
 
-      Tokens_List_append(&token);
+      Tokens_Array_append(&token);
       data++;
       continue;
     }
@@ -196,7 +196,7 @@ Tokens_List *tokenize(char *data) {
           .line = current_line,
       };
 
-      Tokens_List_append(&token);
+      Tokens_Array_append(&token);
       data++;
       continue;
     }
@@ -214,7 +214,7 @@ Tokens_List *tokenize(char *data) {
           .line = current_line,
       };
 
-      Tokens_List_append(&token);
+      Tokens_Array_append(&token);
       data++;
       continue;
     }
@@ -232,7 +232,7 @@ Tokens_List *tokenize(char *data) {
           .line = current_line,
       };
 
-      Tokens_List_append(&token);
+      Tokens_Array_append(&token);
       data++;
       continue;
     }
@@ -259,7 +259,7 @@ Tokens_List *tokenize(char *data) {
           .line = current_line,
       };
 
-      Tokens_List_append(&token);
+      Tokens_Array_append(&token);
 
       continue;
     }
@@ -334,7 +334,7 @@ Tokens_List *tokenize(char *data) {
           .line = current_line,
       };
 
-      Tokens_List_append(&token);
+      Tokens_Array_append(&token);
 
       data++;
       continue;

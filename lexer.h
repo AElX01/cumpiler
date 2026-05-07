@@ -60,17 +60,17 @@ typedef struct {
   Token_Data *items;
   size_t size;
   size_t capacity;
-} Tokens_List;
+} Tokens_Array;
 
 // GLOBAL TOKEN LIST
-extern Tokens_List *TOKENS;
+extern Tokens_Array *TOKENS;
 
 // FUNCTIONS
-void Tokens_List_append(Token_Data *data);
-void Tokens_List_printf(void);
+void Tokens_Array_append(Token_Data *data);
+void Tokens_Array_printf(void);
 
 const char *token_to_string(Token token);
 
-Tokens_List *tokenize(char *data);
+Tokens_Array *tokenize(char *data);
 
 #endif

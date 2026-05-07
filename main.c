@@ -32,9 +32,11 @@ void *get_file_data(const char *path) {
 int main(void) {
   char *data = get_file_data("json_files/example_1.json");
 
+  printf("%s\n", data);
+
   tokenize(data);
 
-  Tokens_List_printf();
+  Tokens_Array_printf();
 
   return 0;
 }
