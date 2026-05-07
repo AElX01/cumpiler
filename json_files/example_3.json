@@ -1,0 +1,51 @@
+{
+    "receta": {
+        "fecha": "10/05/2026",
+        "paciente": {
+            "nombre": "Carlos Alberto Ruiz",
+            "edad": 65
+        },
+        "medico": {
+            "nombre": "Dra. Sofia Valenzuela",
+            "cedula": "87654321"
+        },
+        "medicamentos": [
+            {
+                "nombre": "Loratadina",
+                "dosis": {
+                    "cantidad": 10,
+                    "unidad": "mg"
+                },
+                "frecuencia": {
+                    "intervalo": 24,
+                    "unidad": "horas"
+                },
+                "duracion": {
+                    "cantidad": 14,
+                    "unidad": "dias"
+                },
+                "condicion": "alergia"
+            },
+            {
+                "nombre": "Paracetamol",
+                "dosis": {
+                    "cantidad": 500,
+                    "unidad": "mg"
+                },
+                "frecuencia": {
+                    "intervalo": 6,
+                    "unidad": "horas"
+                },
+                "duracion": {
+                    "cantidad": 3,
+                    "unidad": "dias"
+                },
+                "condicion": "fiebre"
+            }
+        ],
+        "indicaciones": [
+            "Mantener hidratacion constante",
+            "Evitar exposicion al sol"
+        ]
+    }
+}

@@ -1,0 +1,50 @@
+{
+    "receta": {
+        "fecha": "15/04/2026",
+        "paciente": {
+            "nombre": "Daniel Alejandro Canul Mota",
+            "edad": 20
+        },
+        "medico": {
+            "nombre": "Dra. Laura Hernandez Gomez",
+            "cedula": 12345678
+        },
+        "medicamentos": [
+            {
+                "nombre": "Amoxicilina",
+                "dosis": {
+                    "cantidad": 500,
+                    "unidad": "mg"
+                },
+                "frecuencia": {
+                    "intervalo": 8,
+                    "unidad": "horas"
+                },
+                "duracion": {
+                    "cantidad": 7,
+                    "unidad": "dias"
+                }
+            },
+            {
+                "nombre": "Paracetamol",
+                "dosis": {
+                    "cantidad": 500,
+                    "unidad": "mg"
+                },
+                "frecuencia": {
+                    "intervalo": 12,
+                    "unidad": "horas"
+                },
+                "duracion": {
+                    "cantidad": 5,
+                    "unidad": "dias"
+                },
+                "condicion": "dolor"
+            }
+        ],
+        "indicaciones": [
+            "Tomar despues de alimentos",
+            "No suspender el tratamiento antes de finalizarlo"
+        ]
+    }
+}

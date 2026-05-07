@@ -1,0 +1,30 @@
+{
+    "receta": {
+        "fecha": "03/05/2026",
+        "paciente": {
+            "nombre": "Elena Garcia Rios",
+            "edad": 28
+        },
+        "medico": {
+            "nombre": "Dr. Roberto Mendez",
+            "cedula": "98765432"
+        },
+        "medicamentos": [
+            {
+                "nombre": "Ibuprofeno",
+                "dosis": {
+                    "cantidad": 400,
+                    "unit": "mg"
+                },
+                "frecuencia": {
+                    "intervalo": 8,
+                    "unidad": "horas"
+                },
+                "duracion": {
+                    "cantidad": 5,
+                    "unidad": "dias"
+                }
+            }
+        ]
+    }
+}
