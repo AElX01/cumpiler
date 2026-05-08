@@ -54,12 +54,14 @@ typedef struct {
   Token type;
   char *value;
   int line;
+  int column;
 } Token_Data;
 
 typedef struct {
   Token_Data *items;
   size_t size;
   size_t capacity;
+  int current_token;
 } Tokens_Array;
 
 // GLOBAL TOKEN LIST

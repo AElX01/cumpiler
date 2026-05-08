@@ -1,4 +1,5 @@
 #include "lexer.h"
+#include <stdio.h>
 
 //  allocator
 extern void *mem_alloc(size_t size);
@@ -282,6 +283,12 @@ Tokens_Array *tokenize(char *data) {
       strncpy(value, start, len);
       value[len] = '\0';
 
+      printf("============================\n\n");
+
+      printf("string: %s \nlen: %zu \n\n", value, len);
+
+      printf("============================\n\n");
+
       Token type = T_STRING;
 
       // KEYWORD PROMOTION
@@ -327,6 +334,10 @@ Tokens_Array *tokenize(char *data) {
         type = T_U_HORAS;
       else if (strcmp(value, "dias") == 0)
         type = T_U_DIAS;
+
+      // SPECIAL
+      else
+        type = T_ERROR;
 
       Token_Data token = {
           .type = type,
