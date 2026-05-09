@@ -21,6 +21,10 @@ typedef enum {
   T_STRING,
   T_NUMBER,
 
+  // REGEX VALIDATION
+  T_V_DATE,
+  T_V_ID,
+
   // KEYWORDS
   T_K_RECETA,
   T_K_FECHA,

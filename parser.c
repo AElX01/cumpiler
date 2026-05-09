@@ -3,9 +3,19 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 // custom allocator
 extern void *mem_alloc(size_t size);
+
+const char *get_current_token_value() {
+  if (TOKENS->current_token < (int)TOKENS->size) {
+    return TOKENS->items[TOKENS->current_token].value;
+  }
+  return "";
+}
+
+int get_current_token_int() { return atoi(get_current_token_value()); }
 
 Token peek(size_t offset) {
   if (TOKENS->current_token + offset < TOKENS->size) {
@@ -49,6 +59,61 @@ void match(Token expected_type) {
   return;
 }
 
+void validate_medicine_semantics(const char *name, const char *unit, int freq,
+                                 int duration) {
+  int valid = 0;
+
+  if (strcmp(name, "Paracetamol") == 0) {
+    valid = 1;
+    if (strcmp(unit, "mg") != 0)
+      printf("Semantic Error: 'Paracetamol' must be in 'mg'. Found: %s\n",
+             unit);
+    if (freq != 6 && freq != 8 && freq != 12)
+      printf("Semantic Error: Invalid frequency (%d hrs) for Paracetamol.\n",
+             freq);
+    if (duration < 1 || duration > 5)
+      printf("Semantic Warning: Unusual duration (%d days) for Paracetamol.\n",
+             duration);
+  } else if (strcmp(name, "Amoxicilina") == 0) {
+    valid = 1;
+    if (strcmp(unit, "mg") != 0)
+      printf("Semantic Error: 'Amoxicilina' must be in 'mg'. Found: %s\n",
+             unit);
+    if (freq != 8 && freq != 12)
+      printf("Semantic Error: Invalid frequency (%d hrs) for Amoxicilina.\n",
+             freq);
+    if (duration < 5 || duration > 10)
+      printf("Semantic Warning: Unusual duration (%d days) for Amoxicilina.\n",
+             duration);
+  } else if (strcmp(name, "Ibuprofeno") == 0) {
+    valid = 1;
+    if (strcmp(unit, "mg") != 0) {
+      printf("Semantic Error: 'Ibuprofeno' must be in 'mg'. Found: %s\n", unit);
+    }
+    if (freq != 6 && freq != 8)
+      printf("Semantic Error: Invalid frequency (%d hrs) for Ibuprofeno.\n",
+             freq);
+    if (duration < 1 || duration > 7)
+      printf("Semantic Warning: Unusual duration (%d days) for Ibuprofeno.\n",
+             duration);
+  } else if (strcmp(name, "Loratadina") == 0) {
+    valid = 1;
+    if (strcmp(unit, "mg") != 0) {
+      printf("Semantic Error: 'Loratadina' must be in 'mg'. Found: %s\n", unit);
+    }
+    if (freq != 24)
+      printf("Semantic Error: Invalid frequency (%d hrs) for Loratadina.\n",
+             freq);
+    if (duration < 1 || duration > 14)
+      printf("Semantic Warning: Unusual duration (%d days) for Loratadina.\n",
+             duration);
+  }
+
+  if (!valid) {
+    printf("Semantic Error: The medication '%s' is not on the list.\n", name);
+  }
+}
+
 void parse_Recipe() {
   match(T_LBRACE);
   match(T_K_RECETA);
@@ -85,7 +150,7 @@ void parse_Body_Recipe() {
 void parse_Date() {
   match(T_K_FECHA);
   match(T_COLON);
-  match(T_STRING);
+  match(T_V_DATE);
 }
 
 void parse_Pacient() {
@@ -118,15 +183,7 @@ void parse_Doctor() {
   match(T_RBRACE);
 }
 
-void parse_ID() {
-  if (peek(0) == T_STRING) {
-    match(T_STRING);
-  } else if (peek(0) == T_NUMBER) {
-    match(T_NUMBER);
-  } else {
-    match(T_STRING);
-  }
-}
+void parse_ID() { match(T_V_ID); }
 
 void parse_Medicine() {
   match(T_K_MEDICAMENTOS);
@@ -138,10 +195,18 @@ void parse_Medicine() {
   match(T_RBRACKET);
 }
 
+// vars to hold current medicine data
+static char current_med_unit[10];
+static int current_med_freq;
+static int current_med_duration;
+
 void parse_Prescription() {
   match(T_LBRACE);
   match(T_K_NOMBRE);
   match(T_COLON);
+
+  char med_name[100];
+  strncpy(med_name, get_current_token_value(), sizeof(med_name));
   match(T_STRING);
   match(T_COMMA);
 
@@ -157,6 +222,9 @@ void parse_Prescription() {
   parse_Opt_Condition();
 
   match(T_RBRACE);
+
+  validate_medicine_semantics(med_name, current_med_unit, current_med_freq,
+                              current_med_duration);
 }
 
 void parse_Dose() {
@@ -170,6 +238,8 @@ void parse_Dose() {
   match(T_K_UNIDAD);
   match(T_COLON);
 
+  strncpy(current_med_unit, get_current_token_value(),
+          sizeof(current_med_unit));
   parse_Unit_Dose();
 
   match(T_RBRACE);
@@ -191,7 +261,10 @@ void parse_Frequency() {
   match(T_LBRACE);
   match(T_K_INTERVALO);
   match(T_COLON);
+
+  current_med_freq = get_current_token_int();
   match(T_NUMBER);
+
   match(T_COMMA);
   match(T_K_UNIDAD);
   match(T_COLON);
@@ -205,7 +278,10 @@ void parse_Duration() {
   match(T_LBRACE);
   match(T_K_CANTIDAD);
   match(T_COLON);
+
+  current_med_duration = get_current_token_int();
   match(T_NUMBER);
+
   match(T_COMMA);
   match(T_K_UNIDAD);
   match(T_COLON);

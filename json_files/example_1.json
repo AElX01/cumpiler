@@ -7,7 +7,7 @@
         },
         "medico": {
             "nombre": "Dra. Laura Hernandez Gomez",
-            "cedula": 12345678
+            "cedula": "12345678"
         },
         "medicamentos": [
             {

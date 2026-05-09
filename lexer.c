@@ -1,4 +1,5 @@
 #include "lexer.h"
+#include "utils.h"
 #include <stdio.h>
 
 //  allocator
@@ -99,6 +100,10 @@ const char *token_to_string(Token token) {
     return "T_U_HORAS";
   case T_U_DIAS:
     return "T_U_DIAS";
+  case T_V_DATE:
+    return "T_V_DATE";
+  case T_V_ID:
+    return "T_V_ID";
   case T_EOF:
     return "T_EOF";
   case T_ERROR:
@@ -254,8 +259,10 @@ Tokens_Array *tokenize(char *data) {
       strncpy(value, start, len);
       value[len] = '\0';
 
+      Token type = T_NUMBER;
+
       Token_Data token = {
-          .type = T_NUMBER,
+          .type = type,
           .value = value,
           .line = current_line,
       };
@@ -328,6 +335,15 @@ Tokens_Array *tokenize(char *data) {
         type = T_U_HORAS;
       else if (strcmp(value, "dias") == 0)
         type = T_U_DIAS;
+
+      // REGEX VALIDATION
+      else if (match_regex(value, "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/"
+                                  "(19|20)[0-9]{2}$"))
+        type = T_V_DATE;
+      else if (match_regex(value, "^[0-9]{8}$"))
+        type = T_V_ID;
+      else if (match_regex(value, "^[A-Za-z ]+$"))
+        type = T_STRING;
 
       Token_Data token = {
           .type = type,

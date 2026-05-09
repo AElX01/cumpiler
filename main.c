@@ -1,3 +1,4 @@
+#include "lexer.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,7 +35,11 @@ int main(void) {
 
   tokenize(data);
 
+  // Tokens_Array_printf();
+
   start_parsing();
+
+  free_all();
 
   return 0;
 }
