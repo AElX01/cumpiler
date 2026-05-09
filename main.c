@@ -34,9 +34,7 @@ int main(void) {
 
   tokenize(data);
 
-  Tokens_Array_printf();
-
-  parse();
+  start_parsing();
 
   return 0;
 }

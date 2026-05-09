@@ -123,7 +123,7 @@ void Tokens_Array_printf(void) {
 
 Tokens_Array *tokenize(char *data) {
 
-  int current_line = 0;
+  int current_line = 1;
 
   while (*data != '\0') {
 
@@ -283,12 +283,6 @@ Tokens_Array *tokenize(char *data) {
       strncpy(value, start, len);
       value[len] = '\0';
 
-      printf("============================\n\n");
-
-      printf("string: %s \nlen: %zu \n\n", value, len);
-
-      printf("============================\n\n");
-
       Token type = T_STRING;
 
       // KEYWORD PROMOTION
@@ -334,10 +328,6 @@ Tokens_Array *tokenize(char *data) {
         type = T_U_HORAS;
       else if (strcmp(value, "dias") == 0)
         type = T_U_DIAS;
-
-      // SPECIAL
-      else
-        type = T_ERROR;
 
       Token_Data token = {
           .type = type,
