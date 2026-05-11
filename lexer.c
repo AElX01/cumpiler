@@ -337,10 +337,10 @@ Tokens_Array *tokenize(char *data) {
         type = T_U_DIAS;
 
       // REGEX VALIDATION
-      else if (match_regex(value, "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/"
-                                  "(19|20)[0-9]{2}$"))
+      else if (match_regex(value,
+                           "^[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]$"))
         type = T_V_DATE;
-      else if (match_regex(value, "^[0-9]{8}$"))
+      else if (match_regex(value, "^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$"))
         type = T_V_ID;
       else if (match_regex(value, "^[A-Za-z ]+$"))
         type = T_STRING;

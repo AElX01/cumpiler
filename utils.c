@@ -1,18 +1,10 @@
-#include <regex.h>
+#include "thirdparty/tiny-regex-c/re.h"
 #include <stddef.h>
 
 int match_regex(const char *string, const char *pattern) {
-  regex_t regex;
+  int match_length;
 
-  if (regcomp(&regex, pattern, REG_EXTENDED) != 0) {
-    return 0;
-  }
+  int match_index = re_match(pattern, string, &match_length);
 
-  if (regexec(&regex, string, 0, NULL, 0) != 0) {
-    regfree(&regex);
-    return 0;
-  }
-  regfree(&regex);
-
-  return 1;
+  return (match_index != -1);
 }

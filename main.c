@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 #define ALLOC_IMPLEMENTATION
-#include "alloc.h/alloc.h"
 #include "parser.h"
+#include "thirdparty/alloc.h/alloc.h"
 
 void *get_file_data(const char *path) {
   FILE *file = fopen(path, "r");
