@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stddef.h>
 #ifndef LEXER_H
 #define LEXER_H
 

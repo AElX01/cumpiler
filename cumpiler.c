@@ -2,7 +2,6 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #define ALLOC_IMPLEMENTATION
 #include "parser.h"
 #include "thirdparty/alloc.h/alloc.h"
@@ -17,24 +16,30 @@ void *get_file_data(const char *path) {
 
   fseek(file, 0, SEEK_END);
 
-  size_t file_length = ftell(file);
+  size_t file_length = (size_t)ftell(file);
 
-  char *data = mem_alloc(file_length);
+  char *data = mem_alloc((size_t)file_length);
 
   fseek(file, 0, SEEK_SET);
 
-  fread(data, sizeof(char), file_length, file);
+  if (fread(data, sizeof(char), file_length, file) != file_length) {
+    fclose(file);
+    free_all();
+    exit(EXIT_FAILURE);
+  }
 
   fclose(file);
 
   return data;
 }
 
-void print_help() { printf("Usage: cumpiler file"); }
+void print_help(void) { printf("Usage: cumpiler file"); }
 
 int main(int argc, char **argv) {
-  if (argc <= 1)
+  if (argc <= 1) {
     print_help();
+    exit(EXIT_FAILURE);
+  }
 
   char *file = argv[1];
 
@@ -42,12 +47,10 @@ int main(int argc, char **argv) {
 
   tokenize(data);
 
-  // Tokens_Array_printf();
-
   if (TOKENS == NULL || TOKENS->size == 0) {
     printf("Lexer Error: No valid tokens found\n");
     free_all();
-    return EXIT_FAILURE;
+    exit(EXIT_FAILURE);
   }
 
   start_parsing();

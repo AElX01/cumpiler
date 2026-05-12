@@ -1,9 +1,11 @@
 #include "lexer.h"
+#include "thirdparty/alloc.h/alloc.h"
 #include "utils.h"
 #include <stdio.h>
 
 //  allocator
 extern void *mem_alloc(size_t size);
+extern void *mem_realloc(void *ptr, size_t req_size);
 
 Tokens_Array *TOKENS = NULL;
 
@@ -28,10 +30,10 @@ void Tokens_Array_append(Token_Data *data) {
     TOKENS->capacity <<= 1;
 
     Token_Data *temp =
-        realloc(TOKENS->items, TOKENS->capacity * sizeof(Token_Data));
+        mem_realloc(TOKENS->items, TOKENS->capacity * sizeof(Token_Data));
 
     if (temp == NULL) {
-      perror("realloc failed");
+      perror("mem_realloc failed");
       exit(EXIT_FAILURE);
     }
 
@@ -342,7 +344,7 @@ Tokens_Array *tokenize(char *data) {
         type = T_V_DATE;
       else if (match_regex(value, "^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$"))
         type = T_V_ID;
-      else if (match_regex(value, "^[A-Za-z ]+$"))
+      else
         type = T_STRING;
 
       Token_Data token = {

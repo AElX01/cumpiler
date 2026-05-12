@@ -8,18 +8,18 @@
 // custom allocator
 extern void *mem_alloc(size_t size);
 
-const char *get_current_token_value() {
+const char *get_current_token_value(void) {
   if (TOKENS->current_token < (int)TOKENS->size) {
     return TOKENS->items[TOKENS->current_token].value;
   }
   return "";
 }
 
-int get_current_token_int() { return atoi(get_current_token_value()); }
+int get_current_token_int(void) { return atoi(get_current_token_value()); }
 
 Token peek(size_t offset) {
-  if (TOKENS->current_token + offset < TOKENS->size) {
-    return TOKENS->items[TOKENS->current_token + offset].type;
+  if ((size_t)TOKENS->current_token + offset < TOKENS->size) {
+    return TOKENS->items[(size_t)TOKENS->current_token + offset].type;
   }
   return T_EOF;
 }
@@ -44,20 +44,7 @@ void match(Token expected_type) {
     printf("Error in line %d. Expected '%s' and found '%s'\n", current_line,
            token_to_string(expected_type), token_to_string(current_type));
 
-    static int last_error_token_index = -1;
-    static int consecutive_failures_on_token = 0;
-
-    if (last_error_token_index == TOKENS->current_token) {
-      consecutive_failures_on_token++;
-    } else {
-      last_error_token_index = TOKENS->current_token;
-      consecutive_failures_on_token = 1;
-    }
-
-    if (consecutive_failures_on_token > 4) {
-      TOKENS->current_token++;
-      consecutive_failures_on_token = 0;
-    }
+    TOKENS->current_token++;
   }
 
   return;
@@ -118,7 +105,7 @@ void validate_medicine_semantics(const char *name, const char *unit, int freq,
   }
 }
 
-void parse_Recipe() {
+void parse_Recipe(void) {
   match(T_LBRACE);
   match(T_K_RECETA);
   match(T_COLON);
@@ -126,11 +113,9 @@ void parse_Recipe() {
   parse_Body_Recipe();
 
   match(T_RBRACE);
-
-  return;
 }
 
-void parse_Body_Recipe() {
+void parse_Body_Recipe(void) {
   match(T_LBRACE);
 
   parse_Date();
@@ -151,13 +136,13 @@ void parse_Body_Recipe() {
   match(T_RBRACE);
 }
 
-void parse_Date() {
+void parse_Date(void) {
   match(T_K_FECHA);
   match(T_COLON);
   match(T_V_DATE);
 }
 
-void parse_Pacient() {
+void parse_Pacient(void) {
   match(T_K_PACIENTE);
   match(T_COLON);
   match(T_LBRACE);
@@ -171,7 +156,7 @@ void parse_Pacient() {
   match(T_RBRACE);
 }
 
-void parse_Doctor() {
+void parse_Doctor(void) {
   match(T_K_MEDICO);
   match(T_COLON);
   match(T_LBRACE);
@@ -187,9 +172,9 @@ void parse_Doctor() {
   match(T_RBRACE);
 }
 
-void parse_ID() { match(T_V_ID); }
+void parse_ID(void) { match(T_V_ID); }
 
-void parse_Medicine() {
+void parse_Medicine(void) {
   match(T_K_MEDICAMENTOS);
   match(T_COLON);
   match(T_LBRACKET);
@@ -204,7 +189,7 @@ static char current_med_unit[10];
 static int current_med_freq;
 static int current_med_duration;
 
-void parse_Prescription() {
+void parse_Prescription(void) {
   match(T_LBRACE);
   match(T_K_NOMBRE);
   match(T_COLON);
@@ -231,7 +216,7 @@ void parse_Prescription() {
                               current_med_duration);
 }
 
-void parse_Dose() {
+void parse_Dose(void) {
   match(T_K_DOSIS);
   match(T_COLON);
   match(T_LBRACE);
@@ -249,7 +234,7 @@ void parse_Dose() {
   match(T_RBRACE);
 }
 
-void parse_Unit_Dose() {
+void parse_Unit_Dose(void) {
   if (peek(0) == T_U_MG) {
     match(T_U_MG);
   } else if (peek(0) == T_U_ML) {
@@ -259,7 +244,7 @@ void parse_Unit_Dose() {
   }
 }
 
-void parse_Frequency() {
+void parse_Frequency(void) {
   match(T_K_FRECUENCIA);
   match(T_COLON);
   match(T_LBRACE);
@@ -276,7 +261,7 @@ void parse_Frequency() {
   match(T_RBRACE);
 }
 
-void parse_Duration() {
+void parse_Duration(void) {
   match(T_K_DURACION);
   match(T_COLON);
   match(T_LBRACE);
@@ -293,7 +278,7 @@ void parse_Duration() {
   match(T_RBRACE);
 }
 
-void parse_Opt_Condition() {
+void parse_Opt_Condition(void) {
   if (peek(0) == T_COMMA && peek(1) == T_K_CONDICION) {
     match(T_COMMA);
     match(T_K_CONDICION);
@@ -303,7 +288,7 @@ void parse_Opt_Condition() {
   // otherwise, do nothing
 }
 
-void parse_Prescription_List() {
+void parse_Prescription_List(void) {
   parse_Prescription();
 
   if (peek(0) == T_COMMA && peek(1) == T_LBRACE) {
@@ -312,7 +297,7 @@ void parse_Prescription_List() {
   }
 }
 
-void parse_Opt_Indications() {
+void parse_Opt_Indications(void) {
   if (peek(0) == T_COMMA && peek(1) == T_K_INDICACIONES) {
     match(T_COMMA);
     match(T_K_INDICACIONES);
@@ -326,7 +311,7 @@ void parse_Opt_Indications() {
   // otherwise, do nothing
 }
 
-void parse_String_List() {
+void parse_String_List(void) {
   match(T_STRING);
 
   if (peek(0) == T_COMMA && peek(1) == T_STRING) {
