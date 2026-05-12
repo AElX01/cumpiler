@@ -30,12 +30,25 @@ void *get_file_data(const char *path) {
   return data;
 }
 
-int main(void) {
-  char *data = get_file_data("json_files/example_1.json");
+void print_help() {}
+
+int main(int argc, char **argv) {
+  if (argc <= 1)
+    printf("Error: No imput files\n");
+
+  char *file = argv[1];
+
+  char *data = get_file_data(file);
 
   tokenize(data);
 
   // Tokens_Array_printf();
+
+  if (TOKENS == NULL || TOKENS->size == 0) {
+    printf("Lexer Error: No valid tokens found\n");
+    free_all();
+    return EXIT_FAILURE;
+  }
 
   start_parsing();
 

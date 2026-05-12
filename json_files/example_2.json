@@ -14,7 +14,7 @@
                 "nombre": "Ibuprofeno",
                 "dosis": {
                     "cantidad": 400,
-                    "unit": "mg"
+                    "unidad": "mg"
                 },
                 "frecuencia": {
                     "intervalo": 8,

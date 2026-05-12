@@ -25,6 +25,10 @@ Token peek(size_t offset) {
 }
 
 void match(Token expected_type) {
+  if (TOKENS == NULL || TOKENS->items == NULL) {
+    printf("Parser Error: No tokens available\n");
+    return;
+  }
   if (TOKENS->current_token >= (int)TOKENS->size) {
     printf("Error: Unexpected End of File. Expected '%s'\n",
            token_to_string(expected_type));
