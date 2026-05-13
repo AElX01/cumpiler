@@ -1,3 +1,4 @@
+// parser.c
 #include "parser.h"
 #include "lexer.h"
 #include <stddef.h>
@@ -5,7 +6,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-// custom allocator
 extern void *mem_alloc(size_t size);
 
 const char *get_current_token_value(void) {
@@ -46,8 +46,6 @@ void match(Token expected_type) {
 
     TOKENS->current_token++;
   }
-
-  return;
 }
 
 void validate_medicine_semantics(const char *name, const char *unit, int freq,
@@ -109,30 +107,20 @@ void parse_Recipe(void) {
   match(T_LBRACE);
   match(T_K_RECETA);
   match(T_COLON);
-
   parse_Body_Recipe();
-
   match(T_RBRACE);
 }
 
 void parse_Body_Recipe(void) {
   match(T_LBRACE);
-
   parse_Date();
-
   match(T_COMMA);
-
   parse_Pacient();
-
   match(T_COMMA);
-
   parse_Doctor();
-
   match(T_COMMA);
-
   parse_Medicine();
   parse_Opt_Indications();
-
   match(T_RBRACE);
 }
 
@@ -166,9 +154,7 @@ void parse_Doctor(void) {
   match(T_COMMA);
   match(T_K_CEDULA);
   match(T_COLON);
-
   parse_ID();
-
   match(T_RBRACE);
 }
 
@@ -178,13 +164,10 @@ void parse_Medicine(void) {
   match(T_K_MEDICAMENTOS);
   match(T_COLON);
   match(T_LBRACKET);
-
   parse_Prescription_List();
-
   match(T_RBRACKET);
 }
 
-// vars to hold current medicine data
 static char current_med_unit[10];
 static int current_med_freq;
 static int current_med_duration;
@@ -198,18 +181,12 @@ void parse_Prescription(void) {
   strncpy(med_name, get_current_token_value(), sizeof(med_name));
   match(T_STRING);
   match(T_COMMA);
-
   parse_Dose();
-
   match(T_COMMA);
-
   parse_Frequency();
-
   match(T_COMMA);
-
   parse_Duration();
   parse_Opt_Condition();
-
   match(T_RBRACE);
 
   validate_medicine_semantics(med_name, current_med_unit, current_med_freq,
@@ -226,11 +203,9 @@ void parse_Dose(void) {
   match(T_COMMA);
   match(T_K_UNIDAD);
   match(T_COLON);
-
   strncpy(current_med_unit, get_current_token_value(),
           sizeof(current_med_unit));
   parse_Unit_Dose();
-
   match(T_RBRACE);
 }
 
@@ -250,10 +225,8 @@ void parse_Frequency(void) {
   match(T_LBRACE);
   match(T_K_INTERVALO);
   match(T_COLON);
-
   current_med_freq = get_current_token_int();
   match(T_NUMBER);
-
   match(T_COMMA);
   match(T_K_UNIDAD);
   match(T_COLON);
@@ -267,10 +240,8 @@ void parse_Duration(void) {
   match(T_LBRACE);
   match(T_K_CANTIDAD);
   match(T_COLON);
-
   current_med_duration = get_current_token_int();
   match(T_NUMBER);
-
   match(T_COMMA);
   match(T_K_UNIDAD);
   match(T_COLON);
@@ -285,7 +256,6 @@ void parse_Opt_Condition(void) {
     match(T_COLON);
     match(T_STRING);
   }
-  // otherwise, do nothing
 }
 
 void parse_Prescription_List(void) {
@@ -303,12 +273,9 @@ void parse_Opt_Indications(void) {
     match(T_K_INDICACIONES);
     match(T_COLON);
     match(T_LBRACKET);
-
     parse_String_List();
-
     match(T_RBRACKET);
   }
-  // otherwise, do nothing
 }
 
 void parse_String_List(void) {
@@ -316,13 +283,11 @@ void parse_String_List(void) {
 
   if (peek(0) == T_COMMA && peek(1) == T_STRING) {
     match(T_COMMA);
-
     parse_String_List();
   }
 }
 
 int start_parsing(void) {
   parse_Recipe();
-
   return 0;
 }

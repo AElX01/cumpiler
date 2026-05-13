@@ -1,9 +1,10 @@
+// lexer.c
 #include "lexer.h"
 #include "thirdparty/alloc.h/alloc.h"
 #include "utils.h"
+#include <ctype.h>
 #include <stdio.h>
 
-//  allocator
 extern void *mem_alloc(size_t size);
 extern void *mem_realloc(void *ptr, size_t req_size);
 
@@ -137,117 +138,73 @@ Tokens_Array *tokenize(char *data) {
     if (*data == '\n')
       current_line++;
 
-    // {
     if (*data == '{') {
-
       char *value = mem_alloc(2);
       value[0] = '{';
       value[1] = '\0';
-
       Token_Data token = {
-          .type = T_LBRACE,
-          .value = value,
-          .line = current_line,
-      };
-
+          .type = T_LBRACE, .value = value, .line = current_line};
       Tokens_Array_append(&token);
       data++;
       continue;
     }
 
-    // }
     if (*data == '}') {
-
       char *value = mem_alloc(2);
       value[0] = '}';
       value[1] = '\0';
-
       Token_Data token = {
-          .type = T_RBRACE,
-          .value = value,
-          .line = current_line,
-      };
-
+          .type = T_RBRACE, .value = value, .line = current_line};
       Tokens_Array_append(&token);
       data++;
       continue;
     }
 
-    // [
     if (*data == '[') {
-
       char *value = mem_alloc(2);
       value[0] = '[';
       value[1] = '\0';
-
       Token_Data token = {
-          .type = T_LBRACKET,
-          .value = value,
-          .line = current_line,
-      };
-
+          .type = T_LBRACKET, .value = value, .line = current_line};
       Tokens_Array_append(&token);
       data++;
       continue;
     }
 
-    // ]
     if (*data == ']') {
-
       char *value = mem_alloc(2);
       value[0] = ']';
       value[1] = '\0';
-
       Token_Data token = {
-          .type = T_RBRACKET,
-          .value = value,
-          .line = current_line,
-      };
-
+          .type = T_RBRACKET, .value = value, .line = current_line};
       Tokens_Array_append(&token);
       data++;
       continue;
     }
 
-    // :
     if (*data == ':') {
-
       char *value = mem_alloc(2);
       value[0] = ':';
       value[1] = '\0';
-
       Token_Data token = {
-          .type = T_COLON,
-          .value = value,
-          .line = current_line,
-      };
-
+          .type = T_COLON, .value = value, .line = current_line};
       Tokens_Array_append(&token);
       data++;
       continue;
     }
 
-    // ,
     if (*data == ',') {
-
       char *value = mem_alloc(2);
       value[0] = ',';
       value[1] = '\0';
-
       Token_Data token = {
-          .type = T_COMMA,
-          .value = value,
-          .line = current_line,
-      };
-
+          .type = T_COMMA, .value = value, .line = current_line};
       Tokens_Array_append(&token);
       data++;
       continue;
     }
 
-    // NUMBER
     if (isdigit(*data)) {
-
       char *start = data;
       size_t len = 0;
 
@@ -257,28 +214,17 @@ Tokens_Array *tokenize(char *data) {
       }
 
       char *value = mem_alloc(len + 1);
-
       strncpy(value, start, len);
       value[len] = '\0';
 
       Token type = T_NUMBER;
-
-      Token_Data token = {
-          .type = type,
-          .value = value,
-          .line = current_line,
-      };
-
+      Token_Data token = {.type = type, .value = value, .line = current_line};
       Tokens_Array_append(&token);
-
       continue;
     }
 
-    // STRING
     if (*data == '"') {
-
       data++;
-
       char *start = data;
       size_t len = 0;
 
@@ -288,7 +234,6 @@ Tokens_Array *tokenize(char *data) {
       }
 
       char *value = mem_alloc(len + 1);
-
       strncpy(value, start, len);
       value[len] = '\0';
 
@@ -347,12 +292,7 @@ Tokens_Array *tokenize(char *data) {
       else
         type = T_STRING;
 
-      Token_Data token = {
-          .type = type,
-          .value = value,
-          .line = current_line,
-      };
-
+      Token_Data token = {.type = type, .value = value, .line = current_line};
       Tokens_Array_append(&token);
 
       data++;
