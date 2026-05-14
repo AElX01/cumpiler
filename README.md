@@ -1,4 +1,4 @@
-![logo](images/logo.jpg)
+# Cumpiler: Medical Prescription JSON Validator
 
 > **⚠️ DISCLAIMER: For Educational Purposes Only**
 > This software is a proof-of-concept developed for academic and educational purposes (specifically demonstrating formal languages, lexical analysis, and parsing). It is **not** certified, tested, or intended for use in real-world healthcare, medical, or clinical environments. Do not use this to process actual patient data or validate real medical prescriptions.
