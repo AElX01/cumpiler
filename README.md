@@ -66,12 +66,18 @@ You can compile manually by linking the necessary source files:
 
 ```bash
 # Using Clang
-clang -O3 -std=gnu11 -I. -o cumpiler \
-    cumpiler.c lexer.c parser.c utils.c thirdparty/tiny-regex-c/re.c
+clang -O3 -flto -DNDEBUG -w -Wpedantic -Wconversion -Wshadow -Wformat=2 \
+    -fstack-protector-strong -D_FORTIFY_SOURCE=3 -pie -static \
+    -Wl,-z,relro,-z,now -Wl,--strip-all \
+    thirdparty/tiny-regex-c/re.c utils.c parser.c lexer.c cumpiler.c \
+    -o cumpiler
 
 # Using GCC
-gcc -O3 -std=gnu11 -I. -o cumpiler \
-    cumpiler.c lexer.c parser.c utils.c thirdparty/tiny-regex-c/re.c
+gcc -O3 -flto -DNDEBUG -w -Wpedantic -Wconversion -Wshadow -Wformat=2 \
+    -fstack-protector-strong -D_FORTIFY_SOURCE=3 -pie -static \
+    -Wl,-z,relro,-z,now -Wl,--strip-all \
+    thirdparty/tiny-regex-c/re.c utils.c parser.c lexer.c cumpiler.c \
+    -o cumpiler
 
 ```
 
