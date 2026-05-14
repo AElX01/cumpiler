@@ -136,7 +136,14 @@ void parse_Pacient(void) {
   match(T_LBRACE);
   match(T_K_NOMBRE);
   match(T_COLON);
+
+  // SEMANTIC VALIDATION: Check if patient name is empty
+  const char *patient_name = get_current_token_value();
+  if (strlen(patient_name) == 0) {
+    printf("Semantic Error: Patient 'nombre' (name) cannot be empty.\n");
+  }
   match(T_STRING);
+
   match(T_COMMA);
   match(T_K_EDAD);
   match(T_COLON);
@@ -159,7 +166,14 @@ void parse_Doctor(void) {
   match(T_LBRACE);
   match(T_K_NOMBRE);
   match(T_COLON);
+
+  // SEMANTIC VALIDATION: Check if doctor name is empty
+  const char *doctor_name = get_current_token_value();
+  if (strlen(doctor_name) == 0) {
+    printf("Semantic Error: Doctor 'nombre' (name) cannot be empty.\n");
+  }
   match(T_STRING);
+
   match(T_COMMA);
   match(T_K_CEDULA);
   match(T_COLON);
