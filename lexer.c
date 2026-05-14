@@ -204,9 +204,16 @@ Tokens_Array *tokenize(char *data) {
       continue;
     }
 
-    if (isdigit(*data)) {
+    // MATCH NUMBERS (INCLUDING NEGATIVE NUMBERS)
+    if (isdigit(*data) || (*data == '-' && isdigit(*(data + 1)))) {
       char *start = data;
       size_t len = 0;
+
+      // Advance if it's a negative sign
+      if (*data == '-') {
+        data++;
+        len++;
+      }
 
       while (isdigit(*data) || *data == '.') {
         data++;

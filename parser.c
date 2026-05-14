@@ -140,6 +140,15 @@ void parse_Pacient(void) {
   match(T_COMMA);
   match(T_K_EDAD);
   match(T_COLON);
+
+  // SEMANTIC VALIDATION: Verify the age is a positive number
+  int age = get_current_token_int();
+  if (age <= 0) {
+    printf(
+        "Semantic Error: 'edad' (age) must be a positive number. Found: %d\n",
+        age);
+  }
+
   match(T_NUMBER);
   match(T_RBRACE);
 }
