@@ -30,7 +30,7 @@ Because this project relies on Git submodules for its dependencies, **you must u
 Run the following command:
 
 ```bash
-git clone --recurse-submodules -b c_port https://github.com/AElX01/cumpiler.git
+git clone --recurse-submodules https://github.com/AElX01/cumpiler.git
 cd cumpiler
 
 ```
@@ -86,7 +86,8 @@ gcc -O3 -flto -DNDEBUG -w -Wpedantic -Wconversion -Wshadow -Wformat=2 \
 Pass the target JSON file as an argument to the generated executable:
 
 ```bash
-./build/cumpiler json_files/example_1.json
+cd build
+./cumpiler <json file> 
 
 ```
 
